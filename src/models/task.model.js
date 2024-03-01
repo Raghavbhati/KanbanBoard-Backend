@@ -4,7 +4,6 @@ const taskSchema = new mongoose.Schema({
     "board": {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Board',
-        required: true,
     },
     "title": {
         type: String,
@@ -13,7 +12,7 @@ const taskSchema = new mongoose.Schema({
     },
     "description": {
         type: String,
-        trim: true,
+        trim: true, 
     },
     "category": {
         type: String,

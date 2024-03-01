@@ -1,46 +1,41 @@
 const express = require("express");
-const passport = require("passport");
-const userRoute = express.Router();
+const passport = require("../utils/passport");
+const userRouter = express.Router();
 
-userRoute.get("/google/success", (req, res) => {
-  try {
-  } catch (error) {}
-});
-
-userRoute.get("/google/failure", (req, res) => {});
-
-userRoute.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: process.env.CLIENT_URL,
-    failureRedirect: "/login/failed",
-  })
-);
-// userRoute.get("/logout", function (req, res) {
-//   console.log(req);
-//   console.log("logged out!");
-//   req.logout();
-//   res.redirect(process.env.CLIENT_URL);
+// userRouter.get("/google/success", (req, res) => {
+//   try {
+//   } catch (error) {}
 // });
 
-userRoute.post("/logout", function (req, res, next) {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect(process.env.CLIENT_URL);
-  });
-});
+// userRouter.get("/google/failure", (req, res) => {});
 
-// app.get('/auth/google',
-//   passport.authenticate('google', { scope:
-//       [ 'email', 'profile' ] }
-// ));
+userRouter.get('/google', 
+  passport.authenticate('google', { scope:[ 'email', 'profile' ] }
+));
 
-// app.get( '/auth/google/callback',
-//     passport.authenticate( 'google', {
-//         successRedirect: '/auth/google/success',
-//         failureRedirect: '/auth/google/failure'
-// }));
+userRouter.get("/google/callback",  
+  passport.authenticate("google", {failureRedirect: "/login/failed",session:false}), 
+  function(req, res){
+    console.log(res)
+    res.redirect('/');
+  }
+);
 
-module.exports = { userRoute };
+
+// app.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   });
+
+// userRouter.post("/logout", function (req, res, next) {
+//   req.logout(function (err) {
+//     if (err) {
+//       return next(err);
+//     }
+//     res.redirect(process.env.CLIENT_URL);
+//   });
+// });
+
+module.exports = userRouter;
