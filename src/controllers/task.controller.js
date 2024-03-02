@@ -19,6 +19,8 @@ const addNewTask = async(req, res)=>{
     if(!assignedToUser){
         return res.status(400).json(new ApiError(400, [], "assigned to user is required"));
     }
+
+
     try {
         const newTask = await TaskModel.create({
             title, 
@@ -26,31 +28,31 @@ const addNewTask = async(req, res)=>{
             category, 
             deadline,
             "board" : boardID,
-            assignedTo : assignedToUser
+            "assignedTo" : assignedToUser
         });
         if(!newTask){
             return res.status(400).json(new ApiError(400, [], "Something went wrong while adding new task"))
         }
         return res.status(201).json(new ApiResponse(201, {newTask}, "Task Added Successfully"))
     } catch (error) {
-        res.status(500).json(new ApiError(500, [], "Unable to add new task at this moment"));
+        return res.status(500).json(new ApiError(500, [], "Unable to add new task at this moment"));
     }
 }
 
 const getSingleTask = async(req, res)=>{
     const {id} = req.params;
     if(!id){
-        res.status(400).json(new ApiError(400, [], "Task ID is required"))
+        return res.status(400).json(new ApiError(400, [], "Task ID is required"))
     }
     try {
         const getTask = await TaskModel.findById( id);
         if(!getTask){
-            res.status(404).json(new ApiError(404, [], "Task not found"))
+            return res.status(404).json(new ApiError(404, [], "Task not found"))
         }else{
-            res.status(200).json(new ApiResponse(200, {getTask}, "Single Task Fetched Successfully"))
+            return res.status(200).json(new ApiResponse(200, {getTask}, "Single Task Fetched Successfully"))
         }
     } catch (error) {
-        res.status(500).json(new ApiError(500, [], "Unable to fetch the task at this moment"))
+        return res.status(500).json(new ApiError(500, [], "Unable to fetch the task at this moment"))
     }
 }
 
@@ -59,12 +61,12 @@ const updateTask = async (req, res)=>{
     const {title, description, category, deadline}= req.body;
 
     if(!id){
-        res.status(400).json(new ApiError(400, [], "Task ID is required"));
+        return res.status(400).json(new ApiError(400, [], "Task ID is required"));
     }
     try {
         const task = await TaskModel.findById(id);
         if(!task){
-            res.status(404).json(new ApiError(404, [], "Task not found"));
+            return res.status(404).json(new ApiError(404, [], "Task not found"));
         }
 
         task.title = title || task.title;
@@ -74,11 +76,11 @@ const updateTask = async (req, res)=>{
 
         const updatedTask = await task.save();
         if(!updatedTask){
-            res.status(400).json(new ApiError(400, [], "Something went wrong while updating the task"))
+            return  res.status(400).json(new ApiError(400, [], "Something went wrong while updating the task"))
         }
-        res.status(200).json(new ApiResponse(200, {updatedTask}, "Task Updated"))
+        return res.status(200).json(new ApiResponse(200, {updatedTask}, "Task Updated"))
     } catch (error) {
-        res.status(500).json(new ApiError(500, [], "Unable to update the task at this moment"))
+        return res.status(500).json(new ApiError(500, [], "Unable to update the task at this moment"))
     }
 }
 module.exports = {addNewTask, getSingleTask, updateTask}

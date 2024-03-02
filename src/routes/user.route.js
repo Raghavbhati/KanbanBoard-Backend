@@ -4,8 +4,6 @@ const { addUserInDB } = require("../controllers/user.controller");
 const userRouter = express.Router();
 
 
-// userRouter.get("/google/failed", (req, res) => {});
-
 userRouter.get('/google', 
   passport.authenticate('google', { scope:[ 'email', 'profile' ] }
 ));
@@ -17,6 +15,11 @@ userRouter.get("/google/callback",
     res.redirect('/');
   }
 );
+
+userRouter.get("/google/failed", (req, res) => {
+  return res.send("Your google sign/sign request rejected please try again later")
+});
+
 userRouter.post("/logout", function (req, res, next) {
   req.logOut(function (err) {
     if (err) {

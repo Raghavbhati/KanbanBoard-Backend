@@ -7,27 +7,28 @@ const addNewBoard = async (req, res) => {
   const { name } = req.body;
   const { _id } = req.user;
   if (!name) {
-    res.status(400).json(new ApiError(400, [], "Board name is required"));
+    return res.status(400).json(new ApiError(400, [], "Board name is required"));
   }
   try {
     const isAlreadyBoardCreated = await BoardModel.findOne({ createdBy: _id });
     if (isAlreadyBoardCreated) {
-      res.status(403).json(new ApiError(403,[],"You can't create anthor board, user can create only one board" ));
-    } else {
+      return res.status(403).json(new ApiError(403,[],"You can't create anthor board, user can create only one board" ));
+    }else{
       const board = {
         name,
         createdBy: _id,
         members: [_id],
       };
+
       const newBoard = await BoardModel.create(board);
       if (!newBoard) {
-        res.status(500).json( new ApiError(500,[],"Something went wrong while adding new newBoard"));
+        return res.status(500).json( new ApiError(500,[],"Something went wrong while adding new newBoard"));
       }
       
-      res.status(201).json(new ApiResponse(201, { newBoard }, "Board Added Successfully"));
+      return res.status(201).json(new ApiResponse(201, { newBoard }, "Board Added Successfully"));
     }
   } catch (error) {
-    res.status(500).json(new ApiError(500, [], "Unable create the new task at this moment"));
+    return res.status(500).json(new ApiError(500, [], "Unable create the new board at this moment"));
   }
 };
 
@@ -41,7 +42,7 @@ const getSingleBoard = async (req, res) => {
   try {
     const board = await BoardModel.findById(id);
     if(!board){
-      return res.status(404).json(new ApiError(404, [], "Task not found"))
+      return res.status(404).json(new ApiError(404, [], "board not found"))
     }
 
     const tasks = await TaskModel.find({"board": id});

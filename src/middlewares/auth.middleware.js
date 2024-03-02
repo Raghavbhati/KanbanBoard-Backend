@@ -6,7 +6,7 @@ const UserModel = require("../models/user.model");
 const authMiddleware = async (req, res, next)=>{
     const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
     if(!token){
-        res.status(403).json(new ApiError(403, [], "Token Not found - Unauthorized request"))
+        return res.status(403).json(new ApiError(403, [], "Token Not found - Unauthorized request"))
     } 
  
     try {
@@ -14,13 +14,13 @@ const authMiddleware = async (req, res, next)=>{
 
         const user = await UserModel.findById(decode._id);
         if(!user){
-            res.status(404).json(new ApiError(404, [], "User Not found - please signup or sign first"))
+            return res.status(404).json(new ApiError(404, [], "User Not found - please signup or sign first"))
         }
 
         req.user = user;
         next();
     } catch (error) {
-        res.status(500).json(new ApiError(500, [], "Unable to  verify the access token"))
+        return res.status(500).json(new ApiError(500, [], "Unable to verify the access token or incorrect accesstoken please login again"))
     }
 }
 
