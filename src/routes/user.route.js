@@ -12,8 +12,8 @@ userRouter.get('/google',
 
 userRouter.get("/google/callback",  
   passport.authenticate("google", {failureRedirect: "/login/failed"}), 
-  function(req, res){
-    addUserInDB(req.user, res) 
+  async function(req, res){
+    await addUserInDB(req.user, res) 
     res.redirect('/');
   }
 );

@@ -11,15 +11,20 @@ const addUserInDB = async (user, res) => {
         email: user.emails[0].value,
       });
       const accessToken = newUser.generateAccessToken();
-      const options = {
+      var options = {
         httpOnly: true,
         secure: true,
       };
+      console.log("from add to db file ", accessToken);
+      res.cookie("accessToken", accessToken, options);
+    }else{
+      const accessToken = existingUser.generateAccessToken();
+      console.log("from add to db file ", accessToken);
       res.cookie("accessToken", accessToken, options);
     }
   } catch (error) {
     console.error(error);
-  }
+  } 
 };
 
 module.exports = { addUserInDB };

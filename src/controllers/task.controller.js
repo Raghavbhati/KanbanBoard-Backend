@@ -3,24 +3,35 @@ const {ApiError} = require("../utils/ApiError");
 const {ApiResponse} = require("../utils/ApiResponse"); 
 
 const addNewTask = async(req, res)=>{
-    const {title, description, category, deadline}= req.body;
+    const {title, description, category, deadline, boardID, assignedToUser}= req.body;
     if(!title){
-        res.status(400).json(new ApiError(400, [], "title is required"));
+       return res.status(400).json(new ApiError(400, [], "title is required"));
     }
     if(!description){
-        res.status(400).json(new ApiError(400, [], "description is required"));
+        return res.status(400).json(new ApiError(400, [], "description is required"));
     }
     if(!deadline){
-        res.status(400).json(new ApiError(400, [], "deadline is required"));
+        return res.status(400).json(new ApiError(400, [], "deadline is required"));
     }
-
+    if(!boardID){
+        return res.status(400).json(new ApiError(400, [], "board is required"));
+    }
+    if(!assignedToUser){
+        return res.status(400).json(new ApiError(400, [], "assigned to user is required"));
+    }
     try {
-        const newTask = await TaskModel.create({title, description, category, deadline});
+        const newTask = await TaskModel.create({
+            title, 
+            description, 
+            category, 
+            deadline,
+            "board" : boardID,
+            assignedTo : assignedToUser
+        });
         if(!newTask){
-            res.status(400).json(new ApiError(400, [], "Something went wrong while adding new task"))
-        }else{
-            res.status(201).json(new ApiResponse(201, {newTask}, "Task Added Successfully"))
+            return res.status(400).json(new ApiError(400, [], "Something went wrong while adding new task"))
         }
+        return res.status(201).json(new ApiResponse(201, {newTask}, "Task Added Successfully"))
     } catch (error) {
         res.status(500).json(new ApiError(500, [], "Unable to add new task at this moment"));
     }
