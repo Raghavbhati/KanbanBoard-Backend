@@ -3,7 +3,6 @@ const { addNewTask, getSingleTask, updateTask } = require("../controllers/task.c
 const { authMiddleware } = require("../middlewares/auth.middleware");
 const taskRouter = express.Router();
 
-taskRouter.get("/");
 taskRouter.post("/add",authMiddleware, addNewTask);
 taskRouter.get("/:id", getSingleTask);
 taskRouter.patch("/:id", updateTask);

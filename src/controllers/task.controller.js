@@ -1,7 +1,9 @@
 const TaskModel = require("../models/task.model");
+const UserModel = require("../models/user.model");
 const {ApiError} = require("../utils/ApiError");
 const {ApiResponse} = require("../utils/ApiResponse"); 
 
+//Add new task in the board
 const addNewTask = async(req, res)=>{
     const {title, description, category, deadline, boardID, assignedToUser}= req.body;
     if(!title){
@@ -39,6 +41,7 @@ const addNewTask = async(req, res)=>{
     }
 }
 
+//this will return the single task details
 const getSingleTask = async(req, res)=>{
     const {id} = req.params;
     if(!id){
@@ -56,29 +59,46 @@ const getSingleTask = async(req, res)=>{
     }
 }
 
+//this will update the task deatils
 const updateTask = async (req, res)=>{
     const {id} = req.params;
-    const {title, description, category, deadline}= req.body;
-
+    const {title, description, category, deadline, email}= req.body;
     if(!id){
         return res.status(400).json(new ApiError(400, [], "Task ID is required"));
     }
+    const task = await TaskModel.findById(id);
+    if(!task){
+         return res.status(404).json(new ApiError(404, [], "Task not found"));
+    }
     try {
-        const task = await TaskModel.findById(id);
-        if(!task){
-            return res.status(404).json(new ApiError(404, [], "Task not found"));
-        }
+        if(email !== undefined){
+            const user = await UserModel.findOne({"email":email});
+            console.log(user)
+            if(!user){
+                return res.status(404).json(new ApiResponse(404, {}, "User not found with this email"));
+            }
 
-        task.title = title || task.title;
-        task.description = description || task.description;
-        task.category = category || task.category;
-        task.deadline = deadline || task.deadline;
-
-        const updatedTask = await task.save();
-        if(!updatedTask){
-            return  res.status(400).json(new ApiError(400, [], "Something went wrong while updating the task"))
+            task.assignedTo = user._id;
+            const updatedTask= await task.save();
+            if(!updatedTask){
+                return  res.status(400).json(new ApiError(400, [], "Something went wrong while updating the task"))
+            }
+            
+            return res.status(200).json(new ApiResponse(200, {updatedTask}, "Task assigned to new user scuessfully"))
         }
-        return res.status(200).json(new ApiResponse(200, {updatedTask}, "Task Updated"))
+        if(!email){
+            task.title = title || task.title;
+            task.description = description || task.description;
+            task.category = category || task.category;
+            task.deadline = deadline || task.deadline;
+    
+    
+            const updatedTask = await task.save();
+            if(!updatedTask){
+                return  res.status(400).json(new ApiError(400, [], "Something went wrong while updating the task"))
+            }
+            return res.status(200).json(new ApiResponse(200, {updatedTask}, "Task Updated"))
+        }
     } catch (error) {
         return res.status(500).json(new ApiError(500, [], "Unable to update the task at this moment"))
     }

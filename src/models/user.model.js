@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     "avatar" : {
         type : String,
+        default : "https://api.dicebear.com/7.x/lorelei/svg"
     }, 
     "recentlyVisitedBoards" : [{
         type : mongoose.Schema.Types.ObjectId,

@@ -1,5 +1,6 @@
 const UserModel = require("../models/user.model");
 
+//if user dont exist add that user in DB, else set the accessToken 
 const addUserInDB = async (user, res) => {
   try {
     let existingUser = await UserModel.findOne({ googleId: user.id });
