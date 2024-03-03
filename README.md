@@ -48,15 +48,15 @@ The application provides the following APIs:
 - `POST /logout`: For logout request.
 
 ### Board APIs
-- `POST /add`: Create a new board. This endpoint requires authentication.
-- `GET /:id`: Get a single board. This endpoint requires authentication.
-- `GET /allDetails/:id`: Get full board details. This endpoint requires authentication.
-- `PATCH /:id`: Update a board. This endpoint does not require authentication.
+- `POST /add`: Create a new board.
+- `GET /:id`: Get a single board.
+- `GET /allDetails/:id`: Get full board and connected task details.
+- `PATCH /:id`: Update a board.
 
 ### Task APIs
-- `POST /add`: Add a new task. This endpoint requires authentication.
-- `GET /:id`: Get a single task. This endpoint does not require authentication.
-- `PATCH /:id`: Update a task. This endpoint does not require authentication.
+- `POST /add`: Add a new task.
+- `GET /:id`: Get a single task.
+- `PATCH /:id`: Update a task.
 
 Each endpoint has specific requirements and responses. For more details, please refer to the backend documentation.
 
@@ -65,9 +65,9 @@ Each endpoint has specific requirements and responses. For more details, please 
 
 
 **Portfolio:** https://www.raghavbhatirv.in/
-
+<br>
 **Github:** https://github.com/Raghavbhati
-
+<br>
 **Linkdin:** https://www.linkedin.com/in/raghavbhatirv/
-
+<br>
 **Twitter:** https://twitter.com/raghavbhatirv/
