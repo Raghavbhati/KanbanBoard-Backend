@@ -11,6 +11,7 @@ The application is built with the following technologies:
 - AWS
 - Passport.js
 - OAuth
+- Mongoose
 
 ## Installation
 To get started with the project, follow these steps:
@@ -27,7 +28,7 @@ https://github.com/Raghavbhati/KanbanBoard-Backend.git
 npm install
 ```
 
-3. Start the application by running `npm run dev`.
+3. Start the application by running.
 
 ```bash
 npm run dev
@@ -36,7 +37,7 @@ npm run dev
 The application will start running on port 9000.
 
 ## File Structure
-(Here you can provide an image or a brief description of the file structure of your project.)
+![File_Structue](./images/Folder%20Structure.png)
 
 ## API Endpoints
 The application provides the following APIs:
