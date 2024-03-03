@@ -5,7 +5,7 @@ passport.use(
   new GoogleStrategy({
       clientID: `${process.env.GOGGLE_CLIENT_ID}`,
       clientSecret: `${process.env.GOGGLE_CLIENT_SECRET}`,
-      callbackURL: "http://localhost:9000/auth/google/callback",
+      callbackURL: "http://16.170.19.159/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, cb) {
       return cb(null, profile)
