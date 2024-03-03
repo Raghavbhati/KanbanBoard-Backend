@@ -12,11 +12,12 @@ const app = express();
 app.use(express.json())
 app.use(cookieParser())
 
+const SESSION_SECRET = "RAGHAV"
 app.use(session({
-    secret: process.env.SESSION_SECRECT,
+    secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
-})); 
+    saveUninitialized: true,
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
