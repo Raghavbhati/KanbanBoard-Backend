@@ -21,15 +21,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.get("/", (req, res) => {
+app.get("/api/", (req, res) => {
     try {
         res.send("Server is live, Check API Docs");
     } catch (error) {
         res.send("Server down");
     }
 });
-app.use("/auth", userRouter);
-app.use("/board", boardRouter)
-app.use("/task", taskRouter)
+app.use("/api/auth", userRouter);
+app.use("/api/board", boardRouter)
+app.use("/api/task", taskRouter)
 
 module.exports = { app };
